@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Videos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+<body>
+    <h1>YouTube Video Scraper</h1>
+    <button id="fetch-videos">Fetch Top 10 Videos</button>
+    <div class="video-list" id="video-list"></div>
+
+    <script>
+        document.getElementById('fetch-videos').addEventListener('click', function() {
+            this.disabled = true;
+            fetch('/fetch-videos')
+                .then(response => response.json())
+                .then(data => {
+                    const videoList = document.getElementById('video-list');
+                    videoList.innerHTML = '';
+                    data.forEach(video => {
+                        const videoItem = document.createElement('div');
+                        videoItem.className = 'video-item';
+                        videoItem.innerHTML = `
+                            <h3>${video.title}</h3>
+                            <p>Channel: ${video.channel}</p>
+                            <p>Views: ${video.views}</p>
+                            <p>Subscribers: ${video.subscribers}</p>
+                            <p>Genre: ${video.genre}</p>
+                            <p><a href="${video.url}" target="_blank">Watch on YouTube</a></p>
+                        `;
+                        videoList.appendChild(videoItem);
+                    });
+                    document.getElementById('fetch-videos').disabled = false;
+                });
+        });
+    </script>
+</body>
+</html>
