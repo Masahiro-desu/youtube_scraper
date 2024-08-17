@@ -1,4 +1,4 @@
-# app.py
+#仕組みを理解しよう！
 from flask import Flask, render_template, jsonify
 from models import db, Video
 import requests
